@@ -77,7 +77,7 @@ A API oferece os seguintes endpoints:
 - Recuperação de senha
 - Perfis de usuários (Admin, Usuário Comum)
 - Integração com OAuth2
-- Suporte ao Usuário
+- Atendimento/Suporte ao Usuário Cliente
 
 ## Licença
 Este projeto está sob a licença MIT. Sinta-se à vontade para utilizá-lo e modificá-lo.
