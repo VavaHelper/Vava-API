@@ -1,5 +1,9 @@
 package com.helper.vavahelper.Controllers;
 
+
+import com.helper.vavahelper.Models.User;
+import com.helper.vavahelper.Models.Role;
+import com.helper.vavahelper.Repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

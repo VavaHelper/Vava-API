@@ -1,5 +1,6 @@
 package com.helper.vavahelper.Repositories;
 
+import com.helper.vavahelper.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
