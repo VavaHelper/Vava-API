@@ -1,13 +1,16 @@
 package com.helper.vavahelper.Models;
 
+import com.helper.vavahelper.Models.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Getter 
+@Setter
+@NoArgsConstructor 
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

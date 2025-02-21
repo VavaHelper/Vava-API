@@ -1,4 +1,4 @@
-package com.helper.vavahelper.Controllers;
+package com.helper.vavahelper.Service;
 
 
 import com.helper.vavahelper.Models.User;
