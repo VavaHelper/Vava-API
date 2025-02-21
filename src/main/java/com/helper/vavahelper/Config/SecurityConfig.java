@@ -1,6 +1,6 @@
 package com.helper.vavahelper.Config;
 
-import com.helper.vavahelper.repositories.UserRepository;
+import com.helper.vavahelper.Repositories.UserRepository;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
