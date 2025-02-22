@@ -32,13 +32,17 @@ spring.jpa.database-platform=org.hibernate.dialect.MariaDBDialect
 ## Como Rodar o Projeto
 1. Clone o repositório:
    ```sh
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+   git clone https://github.com/VavaHelper/Vava-API.git
    ```
 2. Acesse o diretório do projeto:
    ```sh
-   cd seu/repositorio
+   cd Vava-API
    ```
-3. Compile e execute o projeto:
+3. Trocar branch para DSV no projeto:
+   ```sh
+   git checkout development
+   ```
+4. Compile e execute o projeto:
    ```sh
    mvn spring-boot:run
    ```
