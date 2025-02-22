@@ -1,6 +1,5 @@
 package com.helper.vavahelper.Models;
 
-import com.helper.vavahelper.Models.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
