@@ -43,7 +43,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MariaDBDialect
    mvn spring-boot:run
    ```
 
-## Como Rodar o Projeto(DSV)
+## Como Rodar o Projeto (DSV)
 1. Clone o repositório:
    ```sh
    git clone https://github.com/VavaHelper/Vava-API.git
@@ -99,3 +99,5 @@ A API oferece os seguintes endpoints:
 
 ## Licença
 Este projeto está sob a licença MIT. Sinta-se à vontade para utilizá-lo e modificá-lo.
+
+
