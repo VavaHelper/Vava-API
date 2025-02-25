@@ -47,6 +47,10 @@ spring.jpa.defer-datasource-initialization=true
 - `spring.h2.console.path=/h2`: Habilita o console web do H2, acessível em `http://localhost:8080/h2`.
 - `spring.jpa.defer-datasource-initialization=true`: Garante que as configurações do banco sejam carregadas corretamente.
 
+## Credenciais **Spring Security** 🦺🔐:
+   - **Usuário**: `admin`
+   - **Senha**: `123`
+
 ## Como Rodar o Projeto
 1. Clone o repositório:
    ```sh
