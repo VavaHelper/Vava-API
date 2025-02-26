@@ -1,9 +1,10 @@
-package com.helper.vavahelper.Repositories;
+package com.helper.vavahelper.repositories;
 
-import com.helper.vavahelper.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.helper.vavahelper.models.User.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUsername(String username);
+    UserDetails findByLogin(String login);
 }

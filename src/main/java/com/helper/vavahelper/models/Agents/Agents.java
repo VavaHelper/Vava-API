@@ -1,4 +1,4 @@
-package com.helper.vavahelper.Models;
+package com.helper.vavahelper.models.Agents;
 
 import jakarta.persistence.*;
 import lombok.*;
