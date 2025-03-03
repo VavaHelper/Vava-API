@@ -1,4 +1,6 @@
-# Spring Boot API
+<h1 align="center"> Spring Boot API </h1>
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
 
 ## Descrição
 Este projeto é uma API de autenticação desenvolvida com **Spring Boot** e **Spring Security**, utilizando **MariaDB** como banco de dados. A API fornece funcionalidades de **registro** e **login** de usuários e será consumida por um frontend desenvolvido em outro framework.
