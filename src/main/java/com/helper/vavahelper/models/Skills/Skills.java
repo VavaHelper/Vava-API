@@ -13,7 +13,7 @@ public class Skills {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     
     @ManyToOne
     @JoinColumn(name = "agente_id", nullable = false)
