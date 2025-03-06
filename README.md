@@ -99,6 +99,17 @@ A API oferece os seguintes endpoints:
 - Integração com OAuth2
 - Atendimento/Suporte ao Usuário Cliente
 
+
+## 📚 Documentações importantes
+Caso esteja com dúvidas, verifique algumas das documentações abaixo, podem ser úteis:
+- [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/) - Saiba como padronizar seus commits do GitHub, isso será muito importante para a organização do projeto;  
+- [Java Spring Boot](https://spring.io/projects/spring-boot) - Framework para criação de aplicações Java, facilitando a configuração e o desenvolvimento;  
+- [Spring Security](https://spring.io/projects/spring-security) - Framework para autenticação e controle de acesso em aplicações Spring Boot;  
+- [Java - Sintaxe](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/index.html) - Guia oficial da Oracle sobre a sintaxe básica da linguagem Java;  
+- [Design Patterns em Java](https://refactoring.guru/design-patterns/java) - Padrões de projeto explicados com exemplos práticos em Java.  
+
+Se tiver dúvidas sobre como iniciar ou progredir, converse com o resto da equipe!
+
 ## Licença
 Este projeto está sob a licença MIT. Sinta-se à vontade para utilizá-lo e modificá-lo.
 
