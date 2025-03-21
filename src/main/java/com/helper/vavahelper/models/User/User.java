@@ -24,10 +24,10 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    private UserRole role;
     private String login;
     private String password;
-    private UserRole role;
-
+    
     //Constructor
     public User(String login, String password, UserRole role){
         this.login = login;
