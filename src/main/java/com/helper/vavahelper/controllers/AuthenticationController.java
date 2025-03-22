@@ -1,13 +1,5 @@
 package com.helper.vavahelper.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,13 +11,26 @@ import com.helper.vavahelper.models.User.body.LoginResponseDTO;
 import com.helper.vavahelper.models.User.body.UserRegisterDTO;
 import com.helper.vavahelper.repositories.UserRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("auth")
 @CrossOrigin(origins = "*")
 public class AuthenticationController {
-@Autowired
+    
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -33,16 +38,6 @@ public class AuthenticationController {
 
     @Autowired 
     private UserRepository repository;
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> postMethodLogin(@RequestBody @Valid AuthenticationDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-
-        var token = tokenService.generateToken((User)auth.getPrincipal());
-
-        return ResponseEntity.ok(new LoginResponseDTO(token));
-    }
 
     @PostMapping("/register")
     public ResponseEntity<String> postMethodRegister(@RequestBody @Valid UserRegisterDTO data){
@@ -57,4 +52,15 @@ public class AuthenticationController {
         this.repository.save(newUser);
         return ResponseEntity.ok("User registered successfully.");
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> postMethodLogin(@RequestBody @Valid AuthenticationDTO data) {
+        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+
+        var token = tokenService.generateToken((User)auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
+    }
+
 }
