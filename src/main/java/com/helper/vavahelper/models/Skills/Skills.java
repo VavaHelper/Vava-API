@@ -15,6 +15,9 @@ public class Skills {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(name = "icon_skill", columnDefinition = "TEXT")
+    private String iconSkill;
+    
     @ManyToOne
     @JoinColumn(name = "agente_id", nullable = false)
     private Agents agent;
