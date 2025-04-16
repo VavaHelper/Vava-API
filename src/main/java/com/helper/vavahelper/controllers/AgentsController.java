@@ -22,9 +22,9 @@ public class AgentsController {
     @Autowired
     AgentsRepository agentsRepository;
 
-    @GetMapping("/{id}")
-    public Optional<Agents> getAgentById(@PathVariable Long id) {
-        return agentsRepository.findById(id);
+    @GetMapping("/{name}")
+    public Agents getAgentById(@PathVariable String name) {
+        return agentsRepository.findByName(name);
     }
 
     @GetMapping
