@@ -1,16 +1,16 @@
-# 🚀 Spring Boot API (Branch: Development)
+# 🚀 Spring Boot API (Branch: Homologation)
 
 ## 📌 Descrição
-Este projeto é uma API de **autenticação** desenvolvida com **Spring Boot** e **Spring Security**, utilizando **H2** como banco de dados em ambiente de desenvolvimento (**DSV**). A API fornece funcionalidades de **registro** e **login** de usuários e será consumida por um frontend desenvolvido em outro framework.
+Este projeto é uma API de **autenticação** desenvolvida com **Spring Boot** e **Spring Security**. Na branch de **homologação (HOM)**, a API utiliza **PostgreSQL** como banco de dados, em vez do H2 usado em desenvolvimento. A API fornece funcionalidades de **registro** e **login** de usuários e será consumida por um frontend desenvolvido em outro framework.
 
-**📌 Esta documentação refere-se à branch `development` do projeto.**
+**📌 Esta documentação refere-se à branch `homolog` do projeto.**
 
 ## 🛠️ Tecnologias Utilizadas
 - ☕ **Java 17**
 - 🌱 **Spring Boot 3**
 - 🔐 **Spring Security**
 - 🗄️ **Spring Data JPA**
-- 🛢️ **H2 Database** (Apenas para DSV)
+- 🛢️ **PostgreSQL**
 - 🔑 **JWT (JSON Web Token)**
 - 🏗️ **Maven**
 
@@ -18,38 +18,32 @@ Este projeto é uma API de **autenticação** desenvolvida com **Spring Boot** e
 Antes de rodar o projeto, certifique-se de ter instalado:
 - ✅ **Java 17** ou superior
 - ✅ **Maven** configurado
+- ✅ **PostgreSQL** em execução
 
-## 🛢️ Configuração do Banco de Dados no Ambiente DSV
-No ambiente de desenvolvimento (**DSV**), utilizamos o banco de dados **H2** em memória. Ele é um banco leve, embutido e ideal para testes. O `application.properties` está configurado da seguinte forma:
+## 🛢️ Configuração do Banco de Dados no Ambiente de Homologação (HOM)
+No ambiente de homologação, utilizamos o banco de dados **PostgreSQL**. O `application.properties` está configurado da seguinte forma:
 
 ```properties
-# Configuração do banco de dados para o ambiente de desenvolvimento (DSV)
-spring.datasource.url=jdbc:h2:mem:apidsv
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=123
+# Configuração do banco de dados PostgreSQL para HOM
+spring.datasource.url=jdbc:postgresql://localhost:5432/seu_banco
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+spring.datasource.driver-class-name=org.postgresql.Driver
 
 # Configuração do Hibernate (JPA)
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
-
-# Habilitar o console web do H2 para visualizar os dados do banco
-spring.h2.console.path=/h2
-spring.jpa.defer-datasource-initialization=true
 ```
 
 ### ℹ️ Explicação do `application.properties`
-- 🔗 `spring.datasource.url`: Define a URL de conexão do banco H2 em memória.
-- 🚗 `spring.datasource.driver-class-name`: Define o driver JDBC do H2.
-- 🔐 `spring.datasource.username` e `spring.datasource.password`: Credenciais padrão do H2.
-- 🔄 `spring.jpa.database-platform`: Define o dialeto do Hibernate para H2.
-- 📌 `spring.jpa.hibernate.ddl-auto=update`: Permite que o Hibernate atualize automaticamente o esquema do banco de dados.
+- 🔗 `spring.datasource.url`: URL de conexão com o banco PostgreSQL.
+- 🔐 `spring.datasource.username` e `spring.datasource.password`: Credenciais para acesso ao banco.
+- 🧩 `spring.datasource.driver-class-name`: Driver JDBC do PostgreSQL.
+- 🔄 `spring.jpa.hibernate.ddl-auto=update`: Permite que o Hibernate atualize automaticamente o esquema do banco de dados.
 - 📊 `spring.jpa.show-sql=true`: Exibe no console as consultas SQL executadas.
-- 🌐 `spring.h2.console.path=/h2`: Habilita o console web do H2, acessível em `http://localhost:8080/h2`.
-- ⏳ `spring.jpa.defer-datasource-initialization=true`: Garante que as configurações do banco sejam carregadas corretamente.
 
-## 🔐 Credenciais **Spring Security**
+## 🔐 Credenciais **Spring Security**(Temporário)
    - 👤 **Usuário**: `admin`
    - 🔑 **Senha**: `123`
 
@@ -62,22 +56,14 @@ spring.jpa.defer-datasource-initialization=true
    ```sh
    cd Vava-API
    ```
-3. 🔀 Troque para a branch DSV:
+3. 🔀 Troque para a branch HOM:
    ```sh
-   git checkout development
+   git checkout hom
    ```
 4. 🏗️ Compile e execute o projeto:
    ```sh
    mvn spring-boot:run
    ```
-5. 🌍 Para acessar o console do H2, abra o navegador e digite:
-   ```
-   http://localhost:8080/h2
-   ```
-   Use as credenciais:
-   - **JDBC URL**: `jdbc:h2:mem:apidsv`
-   - **Usuário**: `sa`
-   - **Senha**: `123`
 
 ## 📡 Endpoints Disponíveis
 A API oferece os seguintes endpoints:
@@ -87,8 +73,7 @@ A API oferece os seguintes endpoints:
 - **Request Body:**
   ```json
   {
-    "username": "exemplo",
-    "email": "exemplo@email.com",
+    "login": "exemplo@email.com",
     "password": "senha123"
   }
   ```
@@ -109,12 +94,131 @@ A API oferece os seguintes endpoints:
   }
   ```
 
+
+Sim! Dá pra adicionar **diagramas Mermaid** no seu projeto tranquilamente, especialmente se você estiver usando um visualizador Markdown compatível (como o do GitHub ou extensões no VS Code). Com base nos seus modelos, aqui vai um exemplo de **diagrama ER (Entidade-Relacionamento)** usando Mermaid:
+
+## 📊 Diagrama de Entidades (Mermaid)
+
+<details>
+<summary>📌 Clique para visualizar o Diagrama Entidade-Relacionamento (ER)</summary>
+
+```mermaid
+erDiagram
+    AGENTS ||--o{ LINEUPS : possui
+    AGENTS ||--o{ SKILLS : possui
+    MAPS ||--o{ LINEUPS : possui
+
+    USERS {
+        UUID id
+        string login
+        string password
+        datetime createdAt
+        enum role
+    }
+
+    AGENTS {
+        int id
+        string name
+        int ultPoints
+        string function
+        text iconAgent
+        text imgAgent
+        text description
+    }
+
+    MAPS {
+        int id
+        string name
+    }
+
+    LINEUPS {
+        int id
+        text description
+        text videoUrl
+    }
+
+    SKILLS {
+        int id
+        text iconSkill
+        string name
+        text description
+    }
+```
+
+</details>
+
+<details>
+<summary>📌 Clique para visualizar o Diagrama de Classes UML</summary>
+
+```mermaid
+classDiagram
+    class Agents {
+        Integer id
+        String name
+        int ultPoints
+        String function
+        String iconAgent
+        String imgAgent
+        String description
+    }
+
+    class Lineups {
+        Long id
+        String description
+        String videoUrl
+    }
+
+    class Maps {
+        Long id
+        String name
+    }
+
+    class Skills {
+        Long id
+        String iconSkill
+        String name
+        String description
+    }
+
+    class User {
+        String id
+        String login
+        String password
+        LocalDateTime createdAt
+        +getAuthorities()
+        +getUsername()
+        +isAccountNonExpired()
+        +isAccountNonLocked()
+        +isCredentialsNonExpired()
+        +isEnabled()
+    }
+
+    class UserRole {
+        <<enum>>
+        ADMIN
+        USER
+    }
+
+    %% Relações
+    Agents "1" --> "many" Lineups : tem
+    Agents "1" --> "many" Skills : possui
+    Maps "1" --> "many" Lineups : contém
+    User --> UserRole : tem
+
+```
+
+</details>
+
+## 🧩 Como funciona
+
+- **Agentes** se relacionam com **Lineups** e **Skills** (um agente pode ter várias lineups e várias skills).
+- **Maps** também têm várias lineups.
+- **Users** são separados, com roles definidas no enum `UserRole`.
+
 ## 🔮 Futuras Implementações
 - 🔄 Recuperação de senha
-- 🏅 Perfis de usuários (Admin, Usuário Comum)
 - 🔗 Integração com OAuth2
 - 🎧 Atendimento/Suporte ao Usuário Cliente
 
 ## 📜 Licença
-Este projeto está sob a licença MIT. Sinta-se à vontade para utilizá-lo e modificá-lo. ✨
-
+Este projeto está sob a licença MIT. Sinta-se à vontade para utilizá-lo e modificá-lo.
