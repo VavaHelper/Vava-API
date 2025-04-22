@@ -63,22 +63,15 @@
 			<version>1.18.36</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- Spring Boot Azure Dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!-- H2 DataBase Dependencies -->
+		<!-- PostgreSQL Dependencie -->
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<!-- Spring Boot DevTools (*optional* for development, i like it) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.5</version>
 		</dependency>
 		<!-- JWT Dependencies -->
 		<dependency>
