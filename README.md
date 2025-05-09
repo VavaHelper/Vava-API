@@ -1,116 +1,174 @@
-<h1 align="center"> Spring Boot API </h1>
+<main align="center">
+   <h1 align="center"> Spring Boot API </h1>
+</main>
 
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
+[![────────────────────────────────────────](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
 
-## Descrição
-Este projeto é uma API de autenticação desenvolvida com **Spring Boot** e **Spring Security**, utilizando **MariaDB** como banco de dados. A API fornece funcionalidades de **registro** e **login** de usuários e será consumida por um frontend desenvolvido em outro framework.
+## 📑 Índice
+1. [Descrição](#descrição)  
+2. [Tecnologias](#tecnologias)  
+3. [Requisitos](#requisitos)  
+4. [Configuração do Banco de Dados](#configuração-do-banco-de-dados)  
+5. [Como Rodar](#como-rodar)  
+   - [Ambiente Padrão](#ambiente-padrão)  
+   - [Branch de Desenvolvimento](#branch-de-desenvolvimento)  
+6. [Endpoints](#endpoints)  
+7. [Fluxo de Autenticação](#fluxo-de-autenticação)  
+8. [Futuras Implementações](#futuras-implementações)  
+9. [Documentação Útil](#documentação-útil)  
+10. [Licença](#licença)  
 
-## Tecnologias Utilizadas
-- **Java 17**
-- **Spring Boot 3**
-- **Spring Security**
-- **Spring Data JPA**
-- **MariaDB**
-- **JWT (JSON Web Token)**
-- **Maven**
+---
 
-## Requisitos
-Antes de rodar o projeto, certifique-se de ter instalado:
-- **Java 17** ou superior
-- **MariaDB** instalado e rodando
-- **Maven** configurado
+## 📋 Descrição
+Esta API de **autenticação** foi desenvolvida com **Spring Boot** e **Spring Security**, utilizando **PostgreSQL** como banco de dados.  
+Ela oferece endpoints para **registro** e **login** de usuários, retornando um JWT (JSON Web Token) para acesso seguro, consumível por um frontend separado.
 
-## Configuração do Banco de Dados
-O projeto está configurado para utilizar **MariaDB**. Para configurá-lo, crie um banco de dados e edite o arquivo `application.properties`:
+---
 
-```properties
-spring.datasource.url=jdbc:mariadb://localhost:3306/seu_banco_de_dados
-spring.datasource.username=seu_usuario
-spring.datasource.password=sua_senha
-spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-spring.jpa.database-platform=org.hibernate.dialect.MariaDBDialect
+## 🛠 Tecnologias
+
+| Camada          | Tecnologias                                 |
+|-----------------|---------------------------------------------|
+| Linguagem       | Java 17                                     |
+| Framework       | Spring Boot 3, Spring Security, JPA         |
+| Banco de Dados  | PostgreSQL                                  |
+| Autenticação    | JWT (JSON Web Token)                        |
+| Build & Dep.    | Maven                                       |
+
+---
+
+## ✅ Requisitos
+- **Java 17** ou superior  
+- **PostgreSQL** instalado e em execução  
+- **Maven** (3.6+)  
+
+---
+
+## 🗄️ Configuração do Banco de Dados
+1. Crie um banco no PostgreSQL:
+   ```sql
+   CREATE DATABASE vava_api;
+   ```
+
+2. Atualize `src/main/resources/application.properties`:
+
+   ```properties
+   spring.datasource.url=jdbc:postgresql://localhost:5432/vava_api
+   spring.datasource.username=seu_usuario
+   spring.datasource.password=sua_senha
+
+   spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
+   spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+   ```
+
+---
+
+## ▶️ Como Rodar
+
+### Ambiente Padrão (main)
+
+```bash
+git clone https://github.com/VavaHelper/Vava-API.git
+cd Vava-API
+mvn clean install
+mvn spring-boot:run
 ```
 
-## Como Rodar o Projeto
-1. Clone o repositório:
-   ```sh
-   git clone https://github.com/VavaHelper/Vava-API.git
-   ```
-2. Acesse o diretório do projeto:
-   ```sh
-   cd Vava-API
-   ```
-3. Compile e execute o projeto:
-   ```sh
-   mvn spring-boot:run
-   ```
+### Branch de Desenvolvimento (DSV)
 
-## Como Rodar o Projeto (DSV)
-1. Clone o repositório:
-   ```sh
-   git clone https://github.com/VavaHelper/Vava-API.git
-   ```
-2. Acesse o diretório do projeto:
-   ```sh
-   cd Vava-API
-   ```
-3. Acesse a branch DSV:
-   ```sh
-   git checkout development
-   ```
-4. Compile e execute o projeto:
-   ```sh
-   mvn spring-boot:run
-   ```
+```bash
+git clone https://github.com/VavaHelper/Vava-API.git
+cd Vava-API
+git checkout development
+mvn clean install
+mvn spring-boot:run
+```
 
-## Endpoints Disponíveis
-A API oferece os seguintes endpoints:
+---
 
-### Registro de Usuário
-- **POST** `/api/auth/register`
-- **Request Body:**
-  ```json
-  {
-    "username": "exemplo",
-    "email": "exemplo@email.com",
-    "password": "senha123"
-  }
-  ```
+## 🛣️ Endpoints Disponíveis
 
-### Login de Usuário
-- **POST** `/api/auth/login`
-- **Request Body:**
-  ```json
-  {
-    "email": "exemplo@email.com",
-    "password": "senha123"
-  }
-  ```
-- **Resposta (sucesso):**
-  ```json
-  {
-    "token": "jwt_token_aqui"
-  }
-  ```
+| Método | Rota                 | Descrição                      |
+| -----: | -------------------- | ------------------------------ |
+|   POST | `/api/auth/register` | Registrar novo usuário         |
+|   POST | `/api/auth/login`    | Autenticar usuário e gerar JWT |
 
-## Futuras Implementações
-- Recuperação de senha
-- Perfis de usuários (Admin, Usuário Comum)
-- Integração com OAuth2
-- Atendimento/Suporte ao Usuário Cliente
+<details>
+<summary>▶️ Exemplo de Payload de Registro</summary>
 
+```json
+{
+  "username": "exemplo",
+  "email": "exemplo@email.com",
+  "password": "senha123"
+}
+```
 
-## 📚 Documentações importantes
-Caso esteja com dúvidas, verifique algumas das documentações abaixo, podem ser úteis:
-- [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/) - Saiba como padronizar seus commits do GitHub, isso será muito importante para a organização do projeto;  
-- [Java Spring Boot](https://spring.io/projects/spring-boot) - Framework para criação de aplicações Java, facilitando a configuração e o desenvolvimento;  
-- [Spring Security](https://spring.io/projects/spring-security) - Framework para autenticação e controle de acesso em aplicações Spring Boot;  
-- [Java - Sintaxe](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/index.html) - Guia oficial da Oracle sobre a sintaxe básica da linguagem Java;  
-- [Design Patterns em Java](https://refactoring.guru/design-patterns/java) - Padrões de projeto explicados com exemplos práticos em Java.  
+</details>
 
-Se tiver dúvidas sobre como iniciar ou progredir, converse com o resto da equipe!
+<details>
+<summary>▶️ Exemplo de Payload de Login</summary>
 
-## Licença
-Este projeto está sob a licença MIT. Sinta-se à vontade para utilizá-lo e modificá-lo.
+```json
+{
+  "email": "exemplo@email.com",
+  "password": "senha123"
+}
+```
 
+**Resposta (sucesso):**
 
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5..."
+}
+```
+
+</details>
+
+---
+
+## 🔄 Fluxo de Autenticação
+
+```mermaid
+flowchart LR
+  A[Cliente envia credenciais] --> B{É novo usuário?}
+  B -- Sim --> C[POST /api/auth/register]
+  B -- Não --> D[POST /api/auth/login]
+  D --> E{Credenciais válidas?}
+  C --> F[Usuário criado no DB]
+  F --> D
+  E -- Sim --> G[Gerar JWT e retornar 200 OK]
+  E -- Não --> H[Retornar 401 Unauthorized]
+  G --> I[Cliente armazena token]
+  I --> J[Requisições subsequentes com Authorization: Bearer <token>]
+```
+
+---
+
+## 🚀 Futuras Implementações
+
+* 🔄 Recuperação de senha
+* 👥 Perfis de usuário (Admin, Comum)
+* 🔐 OAuth2 (Google, Facebook)
+* 💬 Sistema de suporte ao cliente
+
+---
+
+## 📚 Documentação Útil
+
+| Tópico                  | Link                                                                                                                                       |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Conventional Commits    | [https://www.conventionalcommits.org/pt-br/v1.0.0/](https://www.conventionalcommits.org/pt-br/v1.0.0/)                                     |
+| Spring Boot             | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                                                           |
+| Spring Security         | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)                                                   |
+| Hibernate & JPA         | [https://docs.spring.io/spring-data/jpa/docs/current/reference/html/](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/) |
+| Design Patterns em Java | [https://refactoring.guru/design-patterns/java](https://refactoring.guru/design-patterns/java)                                             |
+
+---
+
+## 📝 Licença
+
+Este projeto está licenciado sob a **MIT License**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
