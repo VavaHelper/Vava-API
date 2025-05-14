@@ -46,7 +46,7 @@ public class AuthenticationController {
         .badRequest().body("Username already taken.");
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        UserRole role = (data.role() == null) ? UserRole.USER : data.role();
+        UserRole role = UserRole.USER;
 
         User newUser = new User(data.login(), encryptedPassword, role);
         this.repository.save(newUser);
