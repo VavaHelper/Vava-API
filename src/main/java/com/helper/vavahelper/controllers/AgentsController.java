@@ -27,6 +27,8 @@ public class AgentsController {
 
     @Autowired
     AgentsRepository agentsRepository;
+
+    @Autowired
     SkillsRepository skillsRepository;
 
     //All Agents
