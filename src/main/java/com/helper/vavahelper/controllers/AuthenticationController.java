@@ -11,6 +11,12 @@ import com.helper.vavahelper.models.User.body.LoginResponseDTO;
 import com.helper.vavahelper.models.User.body.UserRegisterDTO;
 import com.helper.vavahelper.repositories.UserRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -25,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 
 
+
+@Tag(name = "Authentication", description = "API for user registration and login")
 @RestController
 @RequestMapping("auth")
 @CrossOrigin(origins = "*")
@@ -39,6 +47,19 @@ public class AuthenticationController {
     @Autowired 
     private UserRepository repository;
 
+    @Operation(
+        summary = "Register a new user",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "New user registration data",
+            required = true,
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = UserRegisterDTO.class))
+        ),
+        responses = {
+            @ApiResponse(responseCode = "200", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Username already taken")
+        }
+    )
     @PostMapping("/register")
     public ResponseEntity<String> postMethodRegister(@RequestBody @Valid UserRegisterDTO data){
 
@@ -53,6 +74,21 @@ public class AuthenticationController {
         return ResponseEntity.ok("User registered successfully.");
     }
 
+    @Operation(
+        summary = "Authenticate user and return JWT",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "User login credentials",
+            required = true,
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = AuthenticationDTO.class))
+        ),
+        responses = {
+            @ApiResponse(responseCode = "200", description = "JWT token returned",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = LoginResponseDTO.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+        }
+    )
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> postMethodLogin(@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
