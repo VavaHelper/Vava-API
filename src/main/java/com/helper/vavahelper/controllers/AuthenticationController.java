@@ -75,6 +75,8 @@ public class AuthenticationController {
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         UserRole role = UserRole.USER;
 
+        //TODO: Fix E-Mail in create Register
+
         User newUser = new User(data.login(), encryptedPassword, role);
         this.repository.save(newUser);
         return ResponseEntity.ok("User registered successfully.");

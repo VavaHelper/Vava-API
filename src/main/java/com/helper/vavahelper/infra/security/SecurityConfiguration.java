@@ -34,10 +34,9 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers(HttpMethod.POST, "/auth/forgot-password", "/auth/reset-password").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/forgot-password").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/reset-password").permitAll()
                     .requestMatchers(HttpMethod.OPTIONS, "/agents/*/with-skills").permitAll()
                     .requestMatchers(HttpMethod.GET, "/agents/*/with-skills").permitAll()
                     .requestMatchers(HttpMethod.GET, "/agents/**").permitAll()
@@ -48,7 +47,7 @@ public class SecurityConfiguration {
                     "/swagger-resources/**","/webjars/**").permitAll()
                     .anyRequest().authenticated()
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
                 .frameOptions().sameOrigin()  // Permite iframes no H2
                 )
