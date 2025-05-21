@@ -1,6 +1,7 @@
 package com.helper.vavahelper.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.helper.vavahelper.infra.security.TokenService;
@@ -8,8 +9,10 @@ import com.helper.vavahelper.models.User.User;
 import com.helper.vavahelper.models.User.UserRole;
 import com.helper.vavahelper.models.User.body.AuthenticationDTO;
 import com.helper.vavahelper.models.User.body.LoginResponseDTO;
+import com.helper.vavahelper.models.User.body.ResetPasswordDTO;
 import com.helper.vavahelper.models.User.body.UserRegisterDTO;
 import com.helper.vavahelper.repositories.UserRepository;
+import com.helper.vavahelper.service.PasswordResetService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 
@@ -46,6 +50,8 @@ public class AuthenticationController {
 
     @Autowired 
     private UserRepository repository;
+
+    private PasswordResetService passwordResetService;
 
     @Operation(
         summary = "Register a new user",
@@ -97,6 +103,52 @@ public class AuthenticationController {
         var token = tokenService.generateToken((User)auth.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
+    }
+
+    @Operation(
+        summary = "Request password reset link",
+        description = "Sends an email with a password reset link to the user",
+        parameters = {
+            @io.swagger.v3.oas.annotations.Parameter(
+                name = "email",
+                description = "User's email/login",
+                required = true,
+                example = "user@example.com"
+            )
+        },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Password reset link sent"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+        }
+    )
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> forgotPassword(
+            @RequestParam("email") String email,
+            HttpServletRequest request) {
+        String appUrl = request.getScheme() + "://" 
+                      + request.getServerName() 
+                      + ":" + request.getServerPort();
+        passwordResetService.createPasswordResetToken(email, appUrl);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+        summary = "Reset user password",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Token and new password",
+            required = true,
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ResetPasswordDTO.class))
+        ),
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Password reset successful"),
+            @ApiResponse(responseCode = "400", description = "Invalid or expired token")
+        }
+    )
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@RequestBody ResetPasswordDTO dto) {
+        passwordResetService.resetPassword(dto.token(), dto.newPassword());
+        return ResponseEntity.ok().build();
     }
 
 }

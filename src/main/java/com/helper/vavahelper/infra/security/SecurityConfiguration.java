@@ -36,6 +36,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/forgot-password").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/reset-password").permitAll()
                     .requestMatchers(HttpMethod.OPTIONS, "/agents/*/with-skills").permitAll()
                     .requestMatchers(HttpMethod.GET, "/agents/*/with-skills").permitAll()
                     .requestMatchers(HttpMethod.GET, "/agents/**").permitAll()
