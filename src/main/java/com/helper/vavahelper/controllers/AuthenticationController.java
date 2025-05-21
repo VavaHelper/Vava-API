@@ -20,6 +20,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -69,15 +71,28 @@ public class AuthenticationController {
     )
     @PostMapping("/register")
     public ResponseEntity<String> postMethodRegister(@RequestBody @Valid UserRegisterDTO data){
-
         if(repository.findByLogin(data.login()) != null) return ResponseEntity
         .badRequest().body("Username already taken.");
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        String validLogin = validateEmail(data.login());
+        if(validLogin == null){
+            System.out.println("Valid username!");
+        } else{
+            return ResponseEntity.badRequest().body("Username is invalid!");
+        }
+        
+        String validPass = validatePassword(data.password());
+
+        if (validPass == null) {
+            System.out.println("Valid password!");
+        } else{
+            return ResponseEntity.badRequest().body("Password is invalid: must contain at least 8 characters, 1 uppercase letter, 1 number, and 1 special character");
+        }
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(validPass);
+
         UserRole role = UserRole.USER;
-
-        //TODO: Fix E-Mail in create Register
-
+        
         User newUser = new User(data.login(), encryptedPassword, role);
         this.repository.save(newUser);
         return ResponseEntity.ok("User registered successfully.");
@@ -157,4 +172,42 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
+    private String validatePassword(String password) {
+        Map<String, String> rules = Map.of(
+            ".*[A-Z].*", "one uppercase letter.",
+            ".*[a-z].*", "one lowercase letter.",
+            ".*\\d.*", "one digit",
+            ".*[!@#$%^&*()].*", "one special character (!@#$%^&*())."
+        );
+    
+        if (password == null || password.isEmpty())
+            return "Password cannot be empty.";
+        if (password.length() < 8)
+            return "Password must be at least 8 characters long.";
+    
+        for (var entry : rules.entrySet()) {
+            if (!password.matches(entry.getKey()))
+                return "Password must contain at least " + entry.getValue();
+        }
+    
+        return null;
+    }
+
+    private String validateEmail(String email) {
+        Map<String, String> rules = Map.of(
+            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", "a valid email format."
+        );
+
+        if (email == null || email.isEmpty()) {
+            return "Email cannot be empty.";
+        }
+
+        for (var entry : rules.entrySet()) {
+            if (!email.matches(entry.getKey())) {
+                return "Email must match " + entry.getValue();
+            }
+        }
+
+        return null;
+    }
 }
