@@ -47,7 +47,7 @@ public class SecurityConfiguration {
                     "/swagger-resources/**","/webjars/**").permitAll()
                     .anyRequest().authenticated()
                 )
-                .addFilterAfter(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
                 .frameOptions().sameOrigin()  // Permite iframes no H2
                 )

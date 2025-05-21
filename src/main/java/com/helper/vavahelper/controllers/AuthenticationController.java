@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.helper.vavahelper.infra.security.TokenService;
 import com.helper.vavahelper.models.User.User;
 import com.helper.vavahelper.models.User.UserRole;
 import com.helper.vavahelper.models.User.body.AuthenticationDTO;
@@ -13,6 +12,7 @@ import com.helper.vavahelper.models.User.body.ResetPasswordDTO;
 import com.helper.vavahelper.models.User.body.UserRegisterDTO;
 import com.helper.vavahelper.repositories.UserRepository;
 import com.helper.vavahelper.service.PasswordResetService;
+import com.helper.vavahelper.service.TokenService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,12 +45,13 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private TokenService tokenService;
-
     @Autowired 
     private UserRepository repository;
 
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
     private PasswordResetService passwordResetService;
 
     @Operation(
@@ -149,7 +150,10 @@ public class AuthenticationController {
     )
     @PostMapping("/reset-password")
     public ResponseEntity<Void> resetPassword(@RequestBody ResetPasswordDTO dto) {
-        passwordResetService.resetPassword(dto.token(), dto.newPassword());
+        
+        String encryptedPassword = new BCryptPasswordEncoder().encode(dto.newPassword());
+        
+        passwordResetService.resetPassword(dto.token(), encryptedPassword);
         return ResponseEntity.ok().build();
     }
 
