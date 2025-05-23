@@ -165,10 +165,8 @@ public class AuthenticationController {
     )
     @PostMapping("/reset-password")
     public ResponseEntity<Void> resetPassword(@RequestBody ResetPasswordDTO dto) {
-        
-        String encryptedPassword = new BCryptPasswordEncoder().encode(dto.newPassword());
-        
-        passwordResetService.resetPassword(dto.token(), encryptedPassword);
+
+        passwordResetService.resetPassword(dto.token(), dto.newPassword());
         return ResponseEntity.ok().build();
     }
 
