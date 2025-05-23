@@ -89,7 +89,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body("Password is invalid: must contain at least 8 characters, 1 uppercase letter, 1 number, and 1 special character");
         }
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(validPass);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 
         UserRole role = UserRole.USER;
         
