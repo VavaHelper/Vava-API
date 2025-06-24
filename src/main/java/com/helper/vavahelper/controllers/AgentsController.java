@@ -74,9 +74,9 @@ public class AgentsController {
         String formatted = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
 
         Map<String,String> aliases = Map.of(
-            "waylay",  "WayLay",
-            "kay-o",   "KAY/0",
-            "killjoy", "KillJoy"
+            "Waylay",  "WayLay",
+            "Kay-o",   "KAY/0",
+            "Killjoy", "KillJoy"
         );
  
         String lookupName = aliases.getOrDefault(formatted, formatted);
