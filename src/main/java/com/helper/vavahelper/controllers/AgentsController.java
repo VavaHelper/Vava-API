@@ -1,6 +1,7 @@
 package com.helper.vavahelper.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class AgentsController {
     @Autowired
     SkillsRepository skillsRepository;
 
+    //All Agents
     @Operation(
         summary = "Get all agents",
         responses = {
@@ -48,8 +50,6 @@ public class AgentsController {
                     schema = @Schema(implementation = Agents.class)))
         }
     )
-
-    //All Agents
     @GetMapping
     public List<Agents> getAllAgents() {
         return agentsRepository.findAll();
@@ -70,7 +70,18 @@ public class AgentsController {
     )
     @GetMapping("/{name}")
     public Agents getAgentById(@PathVariable String name) {
-        return agentsRepository.findByName(name);
+        
+        String formatted = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
+
+        Map<String,String> aliases = Map.of(
+            "waylay",  "WayLay",
+            "kay-o",   "KAY/0",
+            "killjoy", "KillJoy"
+        );
+ 
+        String lookupName = aliases.getOrDefault(formatted, formatted);
+
+        return agentsRepository.findByName(lookupName);
     }
 
     //Agent + Skills
@@ -88,14 +99,23 @@ public class AgentsController {
     )
     @GetMapping("/{name}/with-skills")
     public ResponseEntity<AgentsWithSkillsDTO> getAgentWithSkills(@PathVariable String name) {
-        // 1) Busca o agente
-        Agents agent = agentsRepository.findByName(name);
+
+        String formatted = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
+
+        Map<String,String> aliases = Map.of(
+            "waylay",  "WayLay",
+            "kay-o",   "KAY/0",
+            "killjoy", "KillJoy"
+        );
+        
+        String lookupName = aliases.getOrDefault(formatted, formatted);
+
+        Agents agent = agentsRepository.findByName(lookupName);
 
         if (agent == null) {
             return ResponseEntity.notFound().build();
         }
 
-        // 2) Constrói o DTO do agente
         AgentsDTO agentDto = new AgentsDTO(
             agent.getName(),
             agent.getUltPoints(),
@@ -104,7 +124,6 @@ public class AgentsController {
             agent.getDescription()
         );
 
-        // 3) Busca as skills e transforma em SkillDTO
         List<SkillDTO> skillsDto = skillsRepository.findByAgent(agent)
             .stream()
             .map(skill -> new SkillDTO(
@@ -115,9 +134,9 @@ public class AgentsController {
                 agent.getName()
             ))
             .collect(Collectors.toList());
-
-        // 4) Agrupa tudo no DTO final
+            
         AgentsWithSkillsDTO dto = new AgentsWithSkillsDTO(agentDto, skillsDto);
+
         return ResponseEntity.ok(dto);
     }
 
