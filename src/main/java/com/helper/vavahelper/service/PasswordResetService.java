@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.helper.vavahelper.models.User.PasswordResetToken;
 import com.helper.vavahelper.models.User.User;
@@ -86,10 +87,11 @@ public class PasswordResetService {
      * Roda a cada 5 minutos (300.00 ms) e remove tokens vencidos.
      */
     @Scheduled(fixedRate = 300_000)
+    @Transactional
     public void purgeExpiredTokens() {
         LocalDateTime agora = LocalDateTime.now();
-        tokenRepo.deleteByExpiryDateBefore(agora);
+        int removed = tokenRepo.deleteByExpiryDateBefore(agora);
         //log para auditoria
-        System.out.println("[" + agora + "] Tokens expirados removidos");
+        System.out.println("[" + agora + "] Tokens expirados removidos:" + removed);
     }
 }

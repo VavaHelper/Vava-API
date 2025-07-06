@@ -14,5 +14,5 @@ public interface PasswordResetTokenRepository extends JpaRepository<PasswordRese
     Optional<PasswordResetToken> findByToken(String token);
 
     // para limpar tokens expirados antes de agora
-    void deleteByExpiryDateBefore(LocalDateTime now);
+    int deleteByExpiryDateBefore(LocalDateTime expiryDate);
 }
