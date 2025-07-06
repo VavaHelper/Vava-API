@@ -20,7 +20,7 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    @Value("${vavahelper.password-reset.token-expiry-minutes}")
+    @Value("${vavahelper.password-reset.token-expiration}")
     private long expiryMinutes;
 
     public String generateToken(User user){
