@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +20,12 @@ import com.helper.vavahelper.repositories.UserRepository;
 
 @Service
 public class PasswordResetService {
+    
     @Autowired
     private PasswordResetTokenRepository tokenRepo;
+
+    @Value("${vavahelper.password-reset.token-expiration}")
+    private long expiryMinutes;
 
     @Autowired
     private UserRepository userRepo;
@@ -48,7 +54,7 @@ public class PasswordResetService {
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setToken(token);
         resetToken.setUser(user);
-        resetToken.setExpiryDate(LocalDateTime.now().plusHours(1));
+        resetToken.setExpiryDate(LocalDateTime.now().plusMinutes(expiryMinutes));
         tokenRepo.save(resetToken);
 
         // Envia e-mail com link de reset
@@ -73,5 +79,17 @@ public class PasswordResetService {
         userRepo.save(user);
         
         tokenRepo.delete(prt);
+    }
+
+    //Limpeza Periódica: 
+    /*
+     * Roda a cada 5 minutos (300.00 ms) e remove tokens vencidos.
+     */
+    @Scheduled(fixedRate = 300_000)
+    public void purgeExpiredTokens() {
+        LocalDateTime agora = LocalDateTime.now();
+        tokenRepo.deleteByExpiryDateBefore(agora);
+        //log para auditoria
+        System.out.println("[" + agora + "] Tokens expirados removidos");
     }
 }

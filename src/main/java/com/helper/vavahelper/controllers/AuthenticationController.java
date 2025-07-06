@@ -23,8 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,6 +54,9 @@ public class AuthenticationController {
 
     @Autowired
     private PasswordResetService passwordResetService;
+
+    @Value("${vavahelper.urlresetpass}")
+        private String urlResetPassword;
 
     @Operation(
         summary = "Register a new user",
@@ -142,10 +144,9 @@ public class AuthenticationController {
     @PostMapping("/forgot-password")
     public ResponseEntity<Void> forgotPassword(
             @RequestParam("email") String email,
-            HttpServletRequest request) {
-        String appUrl = request.getScheme() + "://" 
-                      + request.getServerName() 
-                      + ":" + request.getServerPort();
+            HttpServletRequest request,
+            String appUrl) {
+        appUrl = urlResetPassword;
         passwordResetService.createPasswordResetToken(email, appUrl);
         return ResponseEntity.ok().build();
     }
