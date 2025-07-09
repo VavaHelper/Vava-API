@@ -74,13 +74,13 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<String> postMethodRegister(@RequestBody @Valid UserRegisterDTO data){
         if(repository.findByLogin(data.login()) != null) return ResponseEntity
-        .badRequest().body("Username already taken.");
+        .badRequest().body("E-mail already taken.");
 
         String validLogin = validateEmail(data.login());
         if(validLogin == null){
-            System.out.println("Valid username!");
+            System.out.println("Valid E-mail!");
         } else{
-            return ResponseEntity.badRequest().body("Username is invalid!");
+            return ResponseEntity.badRequest().body("E-mail is invalid!");
         }
         
         String validPass = validatePassword(data.password());
