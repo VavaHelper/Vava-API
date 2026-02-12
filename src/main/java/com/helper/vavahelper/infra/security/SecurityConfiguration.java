@@ -40,6 +40,8 @@ public class SecurityConfiguration {
                     .requestMatchers(HttpMethod.OPTIONS, "/agents/*/with-skills").permitAll()
                     .requestMatchers(HttpMethod.GET, "/agents/*/with-skills").permitAll()
                     .requestMatchers(HttpMethod.GET, "/agents/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/media/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/media/agents/**").permitAll()
                     .requestMatchers("/h2/**").permitAll()
                     .requestMatchers("/docs/","/docs/**",
                     "/swagger/","/swagger/**","/swagger-ui/**",

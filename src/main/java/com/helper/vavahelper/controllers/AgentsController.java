@@ -69,7 +69,7 @@ public class AgentsController {
         }
     )
     @GetMapping("/{name}")
-    public Agents getAgentById(@PathVariable String name) {
+    public Agents getAgentByIdandName(@PathVariable String name) {
         
         String formatted = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
 
